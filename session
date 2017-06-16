@@ -1,0 +1,152 @@
+#!/bin/bash
+
+# Settings
+control_file="/tmp/current_session"
+log_file="/home/fgindraud/.session.log"
+default_time_spec=25m
+
+# Time manipulation
+function current_timestamp () {
+	date +%s # Timestamp is indepent of timezone
+}
+function timestamp_to_text () {
+	date -u -d @$1 "+%Hh%Mm%Ss"
+	# Using -u (UTC) to prevent timezone offsets (irrelevant for this)
+	# TODO no field if 0 ?
+}
+function text_to_timestamp () {
+	if ! [ -z "$1" ] && [[ "$1" =~ ^(([0-9]+)[Hh])?(([0-9]+)[Mm])?(([0-9]+)[Ss])?$ ]]; then
+		local hours=${BASH_REMATCH[2]:-0}
+		local minutes=${BASH_REMATCH[4]:-0}
+		local seconds=${BASH_REMATCH[6]:-0}
+		echo $((seconds + 60 * (minutes + 60 * hours)))
+		return 0
+	else
+		return 1
+	fi
+}
+function timestamp_to_sleep_duration () {
+	date -u -d @$1 "+%Hh %Mm %Ss"
+	# Using -u (UTC) to prevent timezone offsets (irrelevant for this)
+}
+function timestamp_to_datetime_text () {
+	date -d @$1 # Let locale and timezone do their job
+}
+
+# Utils
+function show_status () {
+	local timestamp_end=$1
+	shift
+	local content=$*
+	local remaining_time_sec=$((timestamp_end - $(current_timestamp)))
+	echo "Session: $content"
+	echo "Time remaining: $(timestamp_to_text $remaining_time_sec)"
+}
+
+time_spec=$(text_to_timestamp $default_time_spec)
+
+# Arg parse
+if [ "$1" == "help" ]; then
+	# Help
+	cat <<EOF
+session                               show session status
+session help                          show this help
+session log                           show the log of sessions
+session abort                         stop current session
+session extend <time>                 adds <time> to the session
+session create [<time>] <content>     create session (defaults to $time_spec)
+session [<time>] <content>            create session
+EOF
+elif [ "$1" == "log" ]; then
+	# Log
+	less $log_file
+elif [ "$1" == "abort" ]; then
+	# Abort current session
+	if [ -f "$control_file" ]; then
+		read timestamp_end session_pid content < "$control_file"
+		show_status $timestamp_end $content
+		kill -TERM $session_pid && echo "Aborted"
+	else
+		echo "No session"
+	fi
+elif [ "$1" == "" ]; then
+	# Report status
+	if [ -f "$control_file" ]; then
+		read timestamp_end session_pid content < "$control_file"
+		show_status $timestamp_end $content
+	else
+		echo "No session"
+	fi
+elif [ "$1" == "extend" ]; then
+	# Extend current session
+	if [ -f "$control_file" ]; then
+		additional_sec=$(text_to_timestamp "$2")
+		if [ $? -eq 0 ]; then
+			read timestamp_end session_pid content < "$control_file"
+			timestamp_now=$(current_timestamp)
+			new_timestamp_end=$((timestamp_end + additional_sec))
+			echo $new_timestamp_end $session_pid "$content" > "$control_file"
+			show_status $timestamp_end $content
+			echo "New time remaining: $(timestamp_to_text $((new_timestamp_end - $(current_timestamp))))"
+		else
+			echo "Bad time string"
+		fi
+	else
+		echo "No session"
+	fi
+else
+	# Create new session
+	if [ -f "$control_file" ]; then
+		echo "A session already exist"
+	else
+		launch=false
+		if [ "$1" == "create" ]; then
+			# "create" prefix removes the confirmation prompt
+			launch=true
+			shift
+		fi
+		t=$(text_to_timestamp "$1")
+		if [ $? -eq 0 ]; then
+			time_spec=$t
+			shift
+		fi
+		content="$@"
+		if ! $launch; then
+			# Confirmation prompt
+			if read -n 1 -p "Start $(timestamp_to_text $time_spec) session \"$content\" ? " ans && [[ "$ans" =~ [YyOo] ]]; then
+				launch=true
+			fi
+			echo
+		fi
+		if $launch; then
+			# Start session process
+			timestamp_start=$(current_timestamp)
+			timestamp_end=$((timestamp_start + time_spec))
+			echo $timestamp_end > "$control_file" # temporary control file (for subprocess)
+			{
+				# Setup exit routine
+				function on_exit {
+					local elapsed_time_sec=$(($(current_timestamp) - timestamp_start))
+					echo "[$(timestamp_to_datetime_text $timestamp_start) | $(timestamp_to_text $elapsed_time_sec)] $content" >> "$log_file"
+					rm -f "$control_file"
+				}
+				trap on_exit EXIT
+				# Wait (supports increasing the timestamp end)
+				while true; do
+					read tend crap < "$control_file"
+					remaining_time_sec=$((tend - $(current_timestamp)))
+					if [ "$remaining_time_sec" -lt 0 ]; then
+						break
+					fi
+					sleep $(timestamp_to_sleep_duration $remaining_time_sec)
+				done
+				i3lock -n -c 'c07000'
+			} &
+			pid=$!
+			disown
+			# Full control file
+			echo $timestamp_end $pid "$content" > "$control_file"
+			show_status $timestamp_end $content
+		fi
+	fi
+fi
