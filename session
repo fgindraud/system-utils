@@ -124,6 +124,8 @@ else
 			timestamp_end=$((timestamp_start + time_spec))
 			echo $timestamp_end > "$control_file" # temporary control file (for subprocess)
 			{
+				# Wait a few seconds for control_file setup completion (race conditions...)
+				sleep 5s
 				# Setup exit routine
 				function on_exit {
 					local elapsed_time_sec=$(($(current_timestamp) - timestamp_start))
