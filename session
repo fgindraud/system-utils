@@ -113,7 +113,7 @@ else
 		content="$@"
 		if ! $launch; then
 			# Confirmation prompt
-			if read -n 1 -p "Start $(timestamp_to_text $time_spec) session \"$content\" ? " ans && [[ "$ans" =~ [YyOo] ]]; then
+			if read -N 1 -p "Start $(timestamp_to_text $time_spec) session \"$content\" ? " && [[ "$REPLY" =~ [YyOo] ]]; then
 				launch=true
 			fi
 			echo
