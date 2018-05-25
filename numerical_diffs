@@ -22,9 +22,6 @@ Options:
     --relative-threshold=FLOAT   Color if |relative_diff| >= FLOAT
 """
 
-# FIXME color codes are not recognized by column -t
-# Thus column will take them into account for column length, which breaks alignment
-
 from docopt import docopt
 import itertools
 
@@ -43,8 +40,13 @@ try:
 except:
     rel_thr = 0.
 
-def color_if (a, r):
+def color_condition (a, r):
     return abs (a) >= abs_thr and abs (r) >= rel_thr
+
+def colored (text, color_code = 0):
+    # Must be called for each column value, to ensure the same amount of special characters are inserted everywhere
+    # This prevents column size mismatch for column (1)
+    return str.format ('\x1b[{:02}m{}\x1b[0m', color_code, text)
 
 def is_float (text):
     try:
@@ -64,26 +66,28 @@ def diff_text (ref_num, other_num):
     elif show_relative:
         text = str (rel_diff)
 
-    if not color_if (abs_diff, rel_diff):
+    if not color_condition (abs_diff, rel_diff):
         color_code = 0 # Default
     elif abs_diff >= 0:
         color_code = 32 # Green
     else:
         color_code = 31 # Red
-    return str.format ('\x1b[{:02}m{}\x1b[0m', color_code, text)
+    return colored (text, color_code)
 
 def compared_lines (line_elements):
     def output_element (ref, other):
+        # colored () is used with default color to insert special codes
+        # this lets utilities like column(1) properly pad text
         if ref is None:
-            return other
+            return colored (other)
         elif other is None:
-            return ref
+            return colored (ref)
         elif ref == other:
-            return ref
+            return colored (ref)
         elif is_float (ref) and is_float (other):
             return diff_text (float (ref), float (other))
         else:
-            return '*' * max (len (ref), len (other))
+            return colored ('*' * max (len (ref), len (other)))
 
     return '\t'.join (map (lambda pair: output_element (pair[0], pair[1]), line_elements))
 
@@ -98,8 +102,8 @@ with open (arguments['<file1>']) as file1:
         for (line1, line2) in zipper (file1.readlines (), file2.readlines ()):
             # lines are '\n' terminated
             if line1 is None:
-                print (line2, end='')
+                print ('\t'.join (map (colored, line2.split ())))
             elif line2 is None:
-                print (line1, end='')
+                print ('\t'.join (map (colored, line1.split ())))
             else:
                 print (compared_lines (zipper (line1.split (), line2.split ())))
