@@ -1,0 +1,97 @@
+#!/usr/bin/env python
+
+"""
+Show numerical differences between arrays of numbers in text files.
+Text files are interpreted as an array of numbers and other text, whitespace separated.
+For each field present in the two files, the numerical difference is printed to stdout.
+
+Field with no difference show the value itself in default shell color.
+If a difference is present, show the 'absolute', 'relative', or 'absolute|relative' difference depending on flags.
+The difference is colored (green if >= 0, red otherwise).
+Output is tab separated.
+
+Usage:
+    numerical_diffs [options] <file1> <file2>
+
+Options:
+    -h, --help      Show this help
+    -a,--abs        Show absolute differences (default)
+    -r,--relative   Show relative differences
+    -t,--trim       Trim non common text
+"""
+
+from docopt import docopt
+import itertools
+
+# FIXME color codes are not recognized by column -t
+# Thus column will take them into account for column length, which breaks alignment
+
+def is_int (text):
+    try:
+        int (text)
+        return True
+    except ValueError:
+        return False
+
+def is_float (text):
+    try:
+        float (text)
+        return True
+    except ValueError:
+        return False
+
+def diff_text (ref_num, other_num):
+    abs_diff = other_num - ref_num
+    rel_diff = abs_diff / ref_num
+
+    if show_absolute and show_relative:
+        text = str.format ('{}|{}', abs_diff, rel_diff)
+    elif show_absolute:
+        text = str (abs_diff)
+    elif show_relative:
+        text = str (rel_diff)
+
+    if abs_diff >= 0:
+        color_code = 32 # Green
+    else:
+        color_code = 31 # Red
+    return str.format ('\x1b[{}m{}\x1b[0m', color_code, text)
+
+def compared_lines (line_elements, show_absolute, show_relative):
+    def output_element (ref, other):
+        if ref is None:
+            return other
+        elif other is None:
+            return ref
+        elif ref == other:
+            return ref
+        elif is_int (ref) and is_int (other):
+            return diff_text (int (ref), int (other))
+        elif is_float (ref) and is_float (other):
+            return diff_text (float (ref), float (other))
+        else:
+            return '*' * max (len (ref), len (other))
+
+    return '\t'.join (map (lambda pair: output_element (pair[0], pair[1]), line_elements))
+
+if __name__ == '__main__':
+    arguments = docopt (__doc__)
+
+    show_absolute = arguments['--abs'] or not arguments['--relative']
+    show_relative = arguments['--relative']
+
+    if arguments['--trim']:
+        zipper = zip
+    else:
+        zipper = itertools.zip_longest
+
+    with open (arguments['<file1>']) as file1:
+        with open (arguments['<file2>']) as file2:
+            for (line1, line2) in zipper (file1.readlines (), file2.readlines ()):
+                # lines are '\n' terminated
+                if line1 is None:
+                    print (line2, end='')
+                elif line2 is None:
+                    print (line1, end='')
+                else:
+                    print (compared_lines (zipper (line1.split (), line2.split ()), show_absolute, show_relative))
