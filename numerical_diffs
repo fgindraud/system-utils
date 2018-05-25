@@ -14,17 +14,37 @@ Usage:
     numerical_diffs [options] <file1> <file2>
 
 Options:
-    -h, --help      Show this help
-    -a,--abs        Show absolute differences (default)
-    -r,--relative   Show relative differences
-    -t,--trim       Trim non common text
+    -h, --help                   Show this help
+    -a,--abs                     Show absolute differences [default]
+    -r,--relative                Show relative differences
+    -t,--trim                    Trim non common text
+    --absolute-threshold=FLOAT   Color if |absolute_diff| >= FLOAT
+    --relative-threshold=FLOAT   Color if |relative_diff| >= FLOAT
 """
+
+# FIXME color codes are not recognized by column -t
+# Thus column will take them into account for column length, which breaks alignment
 
 from docopt import docopt
 import itertools
 
-# FIXME color codes are not recognized by column -t
-# Thus column will take them into account for column length, which breaks alignment
+arguments = docopt (__doc__)
+
+show_absolute = arguments['--abs'] or not arguments['--relative']
+show_relative = arguments['--relative']
+
+try:
+    abs_thr = float (arguments['--absolute-threshold'])
+except:
+    abs_thr = 0.
+
+try:
+    rel_thr = float (arguments['--relative-threshold'])
+except:
+    rel_thr = 0.
+
+def color_if (a, r):
+    return abs (a) >= abs_thr and abs (r) >= rel_thr
 
 def is_float (text):
     try:
@@ -33,25 +53,26 @@ def is_float (text):
     except ValueError:
         return False
 
+def diff_text (ref_num, other_num):
+    abs_diff = other_num - ref_num
+    rel_diff = abs_diff / ref_num
 
-def compared_lines (line_elements, show_absolute, show_relative):
-    def diff_text (ref_num, other_num):
-        abs_diff = other_num - ref_num
-        rel_diff = abs_diff / ref_num
+    if show_absolute and show_relative:
+        text = str.format ('{}|{}', abs_diff, rel_diff)
+    elif show_absolute:
+        text = str (abs_diff)
+    elif show_relative:
+        text = str (rel_diff)
 
-        if show_absolute and show_relative:
-            text = str.format ('{}|{}', abs_diff, rel_diff)
-        elif show_absolute:
-            text = str (abs_diff)
-        elif show_relative:
-            text = str (rel_diff)
+    if not color_if (abs_diff, rel_diff):
+        color_code = 0 # Default
+    elif abs_diff >= 0:
+        color_code = 32 # Green
+    else:
+        color_code = 31 # Red
+    return str.format ('\x1b[{:02}m{}\x1b[0m', color_code, text)
 
-        if abs_diff >= 0:
-            color_code = 32 # Green
-        else:
-            color_code = 31 # Red
-        return str.format ('\x1b[{}m{}\x1b[0m', color_code, text)
-
+def compared_lines (line_elements):
     def output_element (ref, other):
         if ref is None:
             return other
@@ -66,24 +87,19 @@ def compared_lines (line_elements, show_absolute, show_relative):
 
     return '\t'.join (map (lambda pair: output_element (pair[0], pair[1]), line_elements))
 
-if __name__ == '__main__':
-    arguments = docopt (__doc__)
 
-    show_absolute = arguments['--abs'] or not arguments['--relative']
-    show_relative = arguments['--relative']
+if arguments['--trim']:
+    zipper = zip
+else:
+    zipper = itertools.zip_longest
 
-    if arguments['--trim']:
-        zipper = zip
-    else:
-        zipper = itertools.zip_longest
-
-    with open (arguments['<file1>']) as file1:
-        with open (arguments['<file2>']) as file2:
-            for (line1, line2) in zipper (file1.readlines (), file2.readlines ()):
-                # lines are '\n' terminated
-                if line1 is None:
-                    print (line2, end='')
-                elif line2 is None:
-                    print (line1, end='')
-                else:
-                    print (compared_lines (zipper (line1.split (), line2.split ()), show_absolute, show_relative))
+with open (arguments['<file1>']) as file1:
+    with open (arguments['<file2>']) as file2:
+        for (line1, line2) in zipper (file1.readlines (), file2.readlines ()):
+            # lines are '\n' terminated
+            if line1 is None:
+                print (line2, end='')
+            elif line2 is None:
+                print (line1, end='')
+            else:
+                print (compared_lines (zipper (line1.split (), line2.split ())))
