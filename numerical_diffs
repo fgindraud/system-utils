@@ -20,6 +20,7 @@ Options:
     -t,--trim                    Trim non common text
     --absolute-threshold=FLOAT   Color if |absolute_diff| >= FLOAT
     --relative-threshold=FLOAT   Color if |relative_diff| >= FLOAT
+    -s,--show-text               Show text differences
 """
 
 from docopt import docopt
@@ -29,6 +30,7 @@ arguments = docopt (__doc__)
 
 show_absolute = arguments['--abs'] or not arguments['--relative']
 show_relative = arguments['--relative']
+show_text_differences = arguments['--show-text']
 
 try:
     abs_thr = float (arguments['--absolute-threshold'])
@@ -55,7 +57,7 @@ def is_float (text):
     except ValueError:
         return False
 
-def diff_text (ref_num, other_num):
+def numerical_diff_text (ref_num, other_num):
     abs_diff = other_num - ref_num
     rel_diff = abs_diff / ref_num
 
@@ -74,6 +76,15 @@ def diff_text (ref_num, other_num):
         color_code = 31 # Red
     return colored (text, color_code)
 
+def text_diff_text (ref, other):
+    if show_text_differences:
+        text = str.format ('{}|{}', ref, other)
+    else:
+        text = '*' * max (len (ref), len (other))
+
+    color_code = 34 # blue
+    return colored (text, color_code)
+
 def compared_lines (line_elements):
     def output_element (ref, other):
         # colored () is used with default color to insert special codes
@@ -85,9 +96,9 @@ def compared_lines (line_elements):
         elif ref == other:
             return colored (ref)
         elif is_float (ref) and is_float (other):
-            return diff_text (float (ref), float (other))
+            return numerical_diff_text (float (ref), float (other))
         else:
-            return colored ('*' * max (len (ref), len (other)))
+            return text_diff_text (ref, other)
 
     return '\t'.join (map (lambda pair: output_element (pair[0], pair[1]), line_elements))
 
