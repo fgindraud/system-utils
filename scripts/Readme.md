@@ -18,3 +18,8 @@ doomcount
 ---------
 
 Shell timer for deadlines.
+
+numerical\_diffs
+----------------
+
+Highlight numerical differences between tsv files.
