@@ -1,4 +1,6 @@
 Core Rc script shared accross machines
 
-Can be sourced by the actual ~/.bashrc, ~/.vimrc with additional machine specific setup.
-Or can be just copy-pasted (for root bashrc).
+bashrc: sourced in ~/.bashrc + machine specific stuff for user ; copied for root.
+vimrc: sourced in ~/.vimrc + machine specific stuff
+
+clang-format: as default, in ~/.clang-format

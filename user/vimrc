@@ -1,0 +1,24 @@
+" Get user vimrc
+source ~/.fgconfig/vimrc
+
+" Auto doxygen syntax coloring
+let g:load_doxygen_syntax=1
+
+" Clang format
+let g:clang_format#detect_style_file = 1
+let g:clang_format#auto_formatexpr = 1
+autocmd FileType c,cpp,objc map <buffer><F2> :ClangFormat<CR>
+autocmd FileType c,cpp,objc imap <buffer><silent><F2> <Esc>:ClangFormat<CR>i
+
+" Rust
+let g:rustfmt_autosave = 1
+let g:rustfmt_fail_silently = 0
+
+" Set spaces for bpp stuff
+autocmd BufNewFile,BufRead ~/work/code/* set expandtab tabstop=2 shiftwidth=2
+
+" Use Indentline with utf8 bar
+let g:indentLine_char = '│'
+
+" Add locally configured plugins
+execute pathogen#infect ()

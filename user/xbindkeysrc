@@ -1,0 +1,19 @@
+# Backlight
+#"xbacklight -inc 5"
+#	XF86MonBrightnessUp
+
+#"xbacklight -dec 5"
+#	XF86MonBrightnessDown
+
+# Sound
+"amixer set Master 3dB+"
+	XF86AudioRaiseVolume
+
+"amixer set Master 3dB-"
+	XF86AudioLowerVolume
+
+"amixer set Master toggle"
+	XF86AudioMute
+
+"qdbus org.mpris.MediaPlayer2.vlc /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"
+	Mod4 + N
