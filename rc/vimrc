@@ -1,0 +1,78 @@
+"
+" User vimrc
+"
+
+" Use Vim settings, rather than Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
+set nocompatible
+
+" allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+
+" In many terminal emulators the mouse works just fine, thus enable it.
+if has('mouse')
+  set mouse=a
+endif
+
+" Switch syntax highlighting on, when the terminal has colors
+if &t_Co > 2 || has("gui_running")
+  syntax on
+endif
+
+set showcmd " display incomplete commands
+set history=100 " keep 100 lines of command line history
+set ruler " show the cursor position all the time
+set incsearch " do incremental searching
+
+" Only do this part when compiled with support for autocommands.
+if has("autocmd")
+	" Enable file type detection.
+	" Use the default filetype settings, so that mail gets 'tw' set to 72, 'cindent' is on in C files, etc.
+	" Also load indent files, to automatically do language-dependent indenting.
+	filetype plugin indent on
+	
+	" Put these in an autocmd group, so that we can delete them easily.
+	augroup vimrcEx
+	au!
+	
+	" When editing a file, always jump to the last known cursor position. 
+	" Don't do it when the position is invalid or when inside an event handler (happens when dropping a file on gvim).
+	" Also don't do it when the mark is in the first line, that is the default position when opening a file.
+	autocmd BufReadPost *
+		\ if line("'\"") > 1 && line("'\"") <= line("$") |
+		\   exe "normal! g`\"" |
+		\ endif
+	
+	augroup END
+else
+	set autoindent " always set autoindenting on
+endif " has("autocmd")
+
+" Enable tabs
+set noexpandtab
+set tabstop=3
+set softtabstop=0
+set shiftwidth=3
+
+" Show <tab> as '|' followed by multiple ' '. Full height '|' is U+23AE
+" Show trailing edge space, diamond is U+2666
+set list listchars=tab:⎮\ ,trail:♦
+
+" Background
+"set background="dark"
+
+" Infinite textwidth
+set textwidth=0
+
+" Backup and tmp dirs
+set nobackup
+"set backupdir=~/.vim/backups/,.
+set directory=~/.vim/tmp,/tmp/,.
+
+set number
+"set relativenumber
+
+map <C-Left> <C-W><Left>
+map <C-Right> <C-W><Right>
+map <C-Up> <C-W><Up>
+map <C-Down> <C-W><Down>

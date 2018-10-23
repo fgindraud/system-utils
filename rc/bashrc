@@ -1,0 +1,82 @@
+#
+# ~/.bashrc Core
+#
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+# Default PSi
+PS1='[\u@\h:\w]\$ '
+PS2='> '
+PS3='> '
+PS4='+ '
+
+# Append to the history file, don't overwrite it
+shopt -s histappend
+export HISTFILESIZE=5000
+
+# Check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# Make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+### Color ###
+
+# Enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ] || [ -x /bin/dircolors ]; then
+	eval "$(dircolors -b)"
+
+	# Aliases
+	alias ls='ls --color=auto'
+
+	alias grep='grep --color=auto'
+	alias fgrep='fgrep --color=auto'
+	alias egrep='egrep --color=auto'
+
+	# PS1
+	c_rst="\[$(tput sgr0)\]"
+	c_red="\[$(tput setaf 1)\]"
+	c_green="\[$(tput setaf 2)\]"
+	c_yellow="\[$(tput setaf 3)\]"
+	c_blue="\[$(tput setaf 4)\]"
+	c_bold="\[$(tput bold)\]"
+
+	ps1_pct="$c_green"
+	[ "$(whoami)" == "root" ] && ps1_user="${c_red}${c_bold}" || ps1_user="$c_rst"
+	[ "$TERM" == "screen" ] && ps1_screen="${ps1_pct}#${c_rst}screen"
+	ps1_platform="${c_rst}\h${ps1_screen}${ps1_pct}#${c_rst}bash"
+	ps1_descr="${ps1_pct}[${ps1_user}\u${c_rst}${ps1_pct}#${ps1_platform}${ps1_pct}#${c_rst}\A${ps1_pct}]"
+
+	PS1="${ps1_descr}\$([ \$? == 0 ] && echo "$c_green" || echo "$c_red")»${c_blue}\w${ps1_pct}:${c_rst} "
+	PS2="${c_yellow}»${c_rst} "
+	unset ps1_pct ps1_user ps1_screen ps1_platform ps1_descr
+fi
+
+### Bash completion ###
+if ! shopt -oq posix; then
+	[ -r /etc/bash_completion ] && . /etc/bash_completion
+	[ -r /usr/share/bash-completion/bash_completion   ] && . /usr/share/bash-completion/bash_completion
+fi
+
+### Functions ###
+
+alias ll='ls -l'
+alias la='ls -A'
+alias lla='ls -lA'
+
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'
+
+### Misc ###
+
+export EDITOR=vim
+export SUDO_EDITOR=rvim
+
+# Tabstop to 3 in terminal
+tabs -3 >/dev/null
+# Tabstop to 3 in less
+LESS="-x3 -R"; export LESS
+
