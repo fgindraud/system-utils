@@ -14,9 +14,6 @@ autocmd FileType c,cpp,objc imap <buffer><silent><F2> <Esc>:ClangFormat<CR>i
 let g:rustfmt_autosave = 1
 let g:rustfmt_fail_silently = 0
 
-" Set spaces for bpp stuff
-autocmd BufNewFile,BufRead ~/work/code/* set expandtab tabstop=2 shiftwidth=2
-
 " Use Indentline with utf8 bar
 let g:indentLine_char = '│'
 
