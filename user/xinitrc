@@ -18,7 +18,6 @@ xset -b
 
 # Cursor
 [[ -f ~/.Xressources ]] && xrdb -merge ~/.Xressources
-xsetroot -cursor_name left_ptr
 
 ######## Desktop #########
 

@@ -73,6 +73,7 @@ alias rm='rm -i'
 ### Misc ###
 
 export EDITOR=vim
+export VISUAL=vim
 export SUDO_EDITOR=rvim
 
 # Tabstop to 3 in terminal
