@@ -1,0 +1,4 @@
+
+[Default Applications]
+inode/directory=org.kde.dolphin.desktop
+application/pdf=org.kde.okular.desktop
