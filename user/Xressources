@@ -1,0 +1,6 @@
+Xcursor.theme:	Oxygen_White
+
+xterm*locale: true
+xterm*faceName: Monospace:size=9
+
+URxvt*font: xft:Monospace:size=9:antialias=true
