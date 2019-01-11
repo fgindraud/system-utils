@@ -35,7 +35,7 @@ dex -a
 	sleep 3s;
 	# Set a random cat picture as background
 	# Will one day be replaced by slam (if I improve it...)
-	feh --no-fehbg --image-bg black --bg-max $(ls $HOME/user/cats/*.jpg | sort -R)
+	feh --no-fehbg --image-bg black --bg-max --randomize $HOME/user/cats/
 ) &
 
 # i3 Window Manager
