@@ -59,7 +59,7 @@ def is_float (text):
 
 def numerical_diff_text (ref_num, other_num):
     abs_diff = other_num - ref_num
-    rel_diff = abs_diff / ref_num
+    rel_diff = abs_diff / ref_num if ref_num != 0 else float('inf')
 
     if show_absolute and show_relative:
         text = str.format ('{}|{}', abs_diff, rel_diff)
