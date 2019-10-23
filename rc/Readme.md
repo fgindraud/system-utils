@@ -1,6 +1,6 @@
-Core Rc script shared accross machines
+# Core Rc files shared accross machines #
 
-bashrc: sourced in ~/.bashrc + machine specific stuff for user ; copied for root.
-vimrc: sourced in ~/.vimrc + machine specific stuff
-
-clang-format: as default, in ~/.clang-format
+- bashrc: sourced in ~/.bashrc + machine specific stuff for user ; copied for root.
+- vimrc: sourced in ~/.vimrc + machine specific stuff
+- clang-format: as default, in ~/.clang-format
+- gitignore: user global .gitignore, in ~/.config/git/ignore
