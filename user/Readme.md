@@ -8,4 +8,10 @@ Slam is installed as a python egg, then the launcher is copied to ~/.config/slam
 ~/.local/bin is added to path and contain symlink to useful binaries.
 
 Vim plugins with pathogen.
-Plugins: indentLine, rust.vim, vim-clang-format, YouCompleteMe.
+Plugins: vim-clang-format
+
+Audio: Mostly ALSA
+VLC setup to manually prefer ALSA.
+Pulseaudio server "systemctl --user enabled".
+Config has been modified to a "dump pipe mode".
+This seems sufficient to use firefox.
