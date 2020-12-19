@@ -1,0 +1,27 @@
+theme = "native"
+icons = "awesome5"
+
+[[block]]
+block = "net"
+format = "{ip}"
+interval = 10
+
+[[block]]
+block = "temperature"
+
+[[block]]
+block = "memory"
+format_mem = "{Mug}/{MTg}GiB ({Mup}%)"
+
+# Never show swap as we do not have any
+display_type = "memory"
+clickable = false
+
+[[block]]
+block = "cpu"
+format = "{barchart} {utilization}%"
+
+[[block]]
+block = "time"
+interval = 1
+format = "%d-%m-%Y %H:%M:%S"
