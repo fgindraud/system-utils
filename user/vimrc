@@ -1,5 +1,5 @@
 " Get user vimrc
-source ~/.fgconfig/vimrc
+source ~/system/git/rc/vimrc
 
 " Auto doxygen syntax coloring
 let g:load_doxygen_syntax=1

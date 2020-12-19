@@ -2,10 +2,7 @@
 # ~/.bashrc
 #
 
-# .fgconfig is a symlink to the rc/ dir.
-source ~/.fgconfig/bashrc
+# Startx on autologin
+[[ -z "$DISPLAY" && "$XDG_VTNR" -eq 1 ]] && exec startx 
 
-# Autostart X
-if [ -z "$DISPLAY" ] && [ -n "$XDG_VTNR" ] && [ "$XDG_VTNR" -eq 1 ] && ! pgrep X; then
-	exec startx
-fi
+source ~/system/git/rc/bashrc
