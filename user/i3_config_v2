@@ -1,0 +1,217 @@
+#
+# i3 config file.
+#
+
+################################ Setup ################################
+
+# Modificateurs
+set $mod Mod4
+set $wpmod Mod1
+# move mod : Shift
+
+# Screens
+set $ms HDMI-1
+set $ss DP-2
+
+# font for window titles.
+font pango: Monospace 9
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# Hide some border edges
+hide_edge_borders both
+
+############################ Layout control ############################
+
+# split in horizontal orientation
+bindsym $mod+h split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen
+
+# change container layout (stacked, tabbed, default)
+bindsym $mod+s layout stacking
+bindsym $mod+q layout tabbed
+bindsym $mod+d layout default
+
+################################ Focus ################################
+
+# focus the parent/child container
+#bindsym $mod+q focus parent
+#bindsym $mod+w focus child
+
+# Switch focus
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Move window
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+########################### Workspaces ###############################
+
+# Browsing
+bindsym $mod+Tab workspace next
+bindsym $mod+Shift+Tab workspace prev
+
+## LVDS ##
+workspace 1l output $ms
+workspace 2l output $ms
+workspace 3l output $ms
+workspace 4l output $ms
+workspace 5l output $ms
+workspace 6l output $ms
+workspace 7l output $ms
+workspace 8l output $ms
+workspace 9l output $ms
+workspace 10l output $ms
+
+# switch to workspace
+bindsym $mod+ampersand workspace 1l
+bindsym $mod+eacute workspace 2l
+bindsym $mod+quotedbl workspace 3l
+bindsym $mod+apostrophe workspace 4l
+bindsym $mod+parenleft workspace 5l
+bindsym $mod+minus workspace 6l
+bindsym $mod+egrave workspace 7l
+bindsym $mod+underscore workspace 8l
+bindsym $mod+ccedilla workspace 9l
+bindsym $mod+agrave workspace 10l
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move workspace 1l
+bindsym $mod+Shift+2 move workspace 2l
+bindsym $mod+Shift+3 move workspace 3l
+bindsym $mod+Shift+4 move workspace 4l
+bindsym $mod+Shift+5 move workspace 5l
+bindsym $mod+Shift+6 move workspace 6l
+bindsym $mod+Shift+7 move workspace 7l
+bindsym $mod+Shift+8 move workspace 8l
+bindsym $mod+Shift+9 move workspace 9l
+bindsym $mod+Shift+0 move workspace 10l
+
+## VGA ##
+workspace 1v output $ss
+workspace 2v output $ss
+workspace 3v output $ss
+workspace 4v output $ss
+workspace 5v output $ss
+workspace 6v output $ss
+workspace 7v output $ss
+workspace 8v output $ss
+workspace 9v output $ss
+workspace 10v output $ss
+
+# switch to workspace
+bindsym $mod+a workspace 1v
+bindsym $mod+z workspace 2v
+bindsym $mod+e workspace 3v
+bindsym $mod+r workspace 4v
+bindsym $mod+t workspace 5v
+bindsym $mod+y workspace 6v
+bindsym $mod+u workspace 7v
+bindsym $mod+i workspace 8v
+bindsym $mod+o workspace 9v
+bindsym $mod+p workspace 10v
+
+# move focused container to workspace
+bindsym $mod+Shift+A move workspace 1v
+bindsym $mod+Shift+Z move workspace 2v
+bindsym $mod+Shift+E move workspace 3v
+bindsym $mod+Shift+R move workspace 4v
+bindsym $mod+Shift+T move workspace 5v
+bindsym $mod+Shift+Y move workspace 6v
+bindsym $mod+Shift+U move workspace 7v
+bindsym $mod+Shift+I move workspace 8v
+bindsym $mod+Shift+O move workspace 9v
+bindsym $mod+Shift+P move workspace 10v
+
+
+############################### Resize ###############################
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+	# These bindings trigger as soon as you enter the resize mode
+
+	# They resize the border in the direction you pressed, e.g.
+	# when pressing left, the window is resized so that it has
+	# more space on its left
+
+	bindsym Left resize grow left 10 px or 10 ppt
+	bindsym Down resize grow down 10 px or 10 ppt
+	bindsym Up resize grow up 10 px or 10 ppt
+	bindsym Right resize grow right 10 px or 10 ppt
+
+	bindsym Shift+Right resize shrink left 10 px or 10 ppt
+	bindsym Shift+Up resize shrink down 10 px or 10 ppt
+	bindsym Shift+Down resize shrink up 10 px or 10 ppt
+	bindsym Shift+Left resize shrink right 10 px or 10 ppt
+
+	# back to normal: Enter or Escape
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+}
+
+bindsym $mod+g mode "resize"
+
+################################ Bar ################################
+
+# Start i3bar to display a workspace bar (plus the system information i3status finds out, if available)
+bar {
+	status_command i3status-rs ~/.config/i3/status.toml
+	position bottom
+	tray_output $ms
+}
+
+############################### i3 func ###############################
+
+# reload the configuration file
+bindsym $mod+w reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+W restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+X exit
+
+# kill focused window
+bindsym $mod+exclam kill
+
+# toggle floating
+bindsym $mod+less floating toggle
+
+####################### Window-specific config #########################
+
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+
+############################### Commands ###############################
+
+# start dmenu (a program launcher)
+bindsym $mod+space exec --no-startup-id i3-dmenu-desktop
+
+# start a terminal
+bindsym $mod+Return exec alacritty
+bindsym $mod+Shift+Return exec xterm bash
+
+# Browser
+bindsym $mod+c exec firefox
+bindsym $mod+Shift+c exec chromium
+
+# File
+bindsym $mod+b exec pcmanfm-qt
+
+# snapshot
+bindsym Print exec lximage-qt --screenshot
+
+# Disabled stuff
+#exec --no-startup-id xbindkeys
+#exec --no-startup-id xautolock -time 10 -locker i3lock
+#bindsym $mod+l exec --no-startup-id xautolock -locknow
+

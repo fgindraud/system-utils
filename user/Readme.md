@@ -15,3 +15,5 @@ VLC setup to manually prefer ALSA.
 Pulseaudio server "systemctl --user enabled".
 Config has been modified to a "dump pipe mode".
 This seems sufficient to use firefox.
+
+Japanese chars: otf-ipafont
