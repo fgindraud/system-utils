@@ -21,12 +21,10 @@ xset -b
 
 ######## Desktop #########
 
-# Kde theme and terminal
-export TERMINAL=konsole
 export QT_QPA_PLATFORMTHEME="qt5ct"
 
-# Launch autostart stuff
-dex -a
+# xdg autostart
+dex -a -s ~/.config/autostart/
 
 ~/.config/slam/slam &
 
@@ -39,4 +37,4 @@ dex -a
 ) &
 
 # i3 Window Manager
-exec i3 &> ~/.i3/log
+exec i3 &> /tmp/i3_log_fgindraud
