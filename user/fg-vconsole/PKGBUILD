@@ -1,15 +1,15 @@
 # Maintainer: Francois Gindraud <francois.gindraud@gmail.com>
 pkgname='fg-vconsole'
-pkgver=1.0
+pkgver=2
 pkgrel=1
 pkgdesc='Font and keymap for TTY'
 arch=('any')
 license=('MIT')
-source=('custom-ter16-uni2.psf.gz' 'fr-custom-oss.map.gz')
-noextract=('custom-ter16-uni2.psf.gz' 'fr-custom-oss.map.gz')
-md5sums=('a3b069c529f8bc986e4310be0b241597' 'fa3116991e8c04ab3ce824db72d0103f')
+depends=('terminus-font')
+source=('fr-custom-oss.map.gz')
+noextract=('fr-custom-oss.map.gz')
+md5sums=('fa3116991e8c04ab3ce824db72d0103f')
 
 package() {
-	install -D -m644 'custom-ter16-uni2.psf.gz' "${pkgdir}/usr/share/kbd/consolefonts/custom-ter16-uni2.psf.gz"
 	install -D -m644 'fr-custom-oss.map.gz' "${pkgdir}/usr/share/kbd/keymaps/i386/azerty/fr-custom-oss.map.gz"
 }
