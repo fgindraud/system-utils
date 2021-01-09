@@ -1,13 +1,27 @@
 theme = "native"
 icons = "awesome5"
 
+
 [[block]]
 block = "net"
+device = "eno1"
 format = "{ip}"
 interval = 10
 
 [[block]]
+block = "net"
+device = "wlp2s0"
+format = "{ip}"
+interval = 10
+
+[[block]]
+block = "sound"
+driver = "alsa"
+
+[[block]]
 block = "temperature"
+collapsed = false
+chip = "*-isa-*"
 
 [[block]]
 block = "memory"
@@ -20,6 +34,10 @@ clickable = false
 [[block]]
 block = "cpu"
 format = "{barchart} {utilization}%"
+
+[[block]]
+block = "battery"
+format = "{percentage}% {time}"
 
 [[block]]
 block = "time"
