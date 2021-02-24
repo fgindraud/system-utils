@@ -33,7 +33,7 @@ clickable = false
 
 [[block]]
 block = "cpu"
-format = "{barchart} {utilization}%"
+format = "{barchart} {utilization}"
 
 [[block]]
 block = "battery"
