@@ -25,7 +25,7 @@ chip = "*-isa-*"
 
 [[block]]
 block = "memory"
-format_mem = "{Mug}/{MTg}GiB ({Mup}%)"
+format_mem = "{mem_used;G}/{mem_total;G} ({mem_used_percents})"
 
 # Never show swap as we do not have any
 display_type = "memory"
