@@ -211,6 +211,7 @@ bindsym $mod+b exec pcmanfm-qt
 bindsym Print exec lximage-qt --screenshot
 
 # Sound volume keys change card settings
-bindsym XF86AudioRaiseVolume exec --no-startup-id "~/system/git/scripts/change_active_sink_volume.sh +3%"
-bindsym XF86AudioLowerVolume exec --no-startup-id "~/system/git/scripts/change_active_sink_volume.sh -3%"
+bindsym XF86Tools exec --no-startup-id "~/system/git/scripts/change_used_sink.sh"
+bindsym XF86AudioRaiseVolume exec --no-startup-id "pactl set-sink-volume @DEFAULT_SINK@ +3%"
+bindsym XF86AudioLowerVolume exec --no-startup-id "pactl set-sink-volume @DEFAULT_SINK@ -3%"
 
