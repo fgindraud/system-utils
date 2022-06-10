@@ -1,4 +1,5 @@
 Xcursor.theme:	Breeze_Snow
+Xcursor.size: 16
 
 xterm*locale: true
 xterm*faceName: Monospace:size=9
