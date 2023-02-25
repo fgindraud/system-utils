@@ -1,17 +1,14 @@
-theme = "native"
-icons = "awesome5"
-
+[icons]
+icons = "awesome6"
 
 [[block]]
 block = "net"
 device = "eno1"
-format = "{ip}"
 interval = 10
 
 [[block]]
 block = "net"
 device = "wlp2s0"
-format = "{ip}"
 interval = 10
 
 [[block]]
@@ -20,26 +17,21 @@ driver = "alsa"
 
 [[block]]
 block = "temperature"
-collapsed = false
 chip = "*-isa-*"
 
 [[block]]
 block = "memory"
-format_mem = "{mem_used;G}/{mem_total;G} ({mem_used_percents})"
-
-# Never show swap as we do not have any
-display_type = "memory"
-clickable = false
+format = "$icon $mem_used/$mem_total ($mem_used_percents)"
 
 [[block]]
 block = "cpu"
-format = "{barchart} {utilization}"
+format = "$barchart $utilization"
 
 [[block]]
 block = "battery"
-format = "{percentage}% {time}"
+format = "$percentage $time"
 
 [[block]]
 block = "time"
 interval = 1
-format = "%d-%m-%Y %H:%M:%S"
+format = "$icon $timestamp.datetime(f:'%d-%m-%Y %H:%M:%S')"
