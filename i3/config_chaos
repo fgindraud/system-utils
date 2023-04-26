@@ -1,0 +1,11 @@
+# Screens
+set $main_screen LVDS1
+set $aux_screen VGA1
+
+include config_shared
+
+# Audio volume uses alsa
+bindsym XF86AudioRaiseVolume exec --no-startup-id "amixer set Master 3dB+"
+bindsym XF86AudioLowerVolume exec --no-startup-id "amixer set Master 3dB-"
+bindsym XF86AudioMute exec --no-startup-id "amixer set Master toggle"
+

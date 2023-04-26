@@ -1,6 +1,4 @@
-#
-# i3 config file.
-#
+# Config shared between computers
 
 ################################ Setup ################################
 
@@ -8,9 +6,9 @@
 set $mod Mod4
 # move mod : Shift
 
-# Screens
-set $main_screen DP-0
-set $aux_screen DP-4.8
+# Screens : set by includer config file
+#set $main_screen ??
+#set $aux_screen ??
 
 # font for window titles.
 font pango: Monospace 9
@@ -176,9 +174,4 @@ bindsym XF86Explorer exec pcmanfm-qt
 
 # snapshot
 bindsym Print exec lximage-qt --screenshot
-
-# Sound volume keys change card settings
-bindsym XF86Tools exec --no-startup-id "~/system/git/scripts/change_used_sink.sh"
-bindsym XF86AudioRaiseVolume exec --no-startup-id "pactl set-sink-volume @DEFAULT_SINK@ +3%"
-bindsym XF86AudioLowerVolume exec --no-startup-id "pactl set-sink-volume @DEFAULT_SINK@ -3%"
 

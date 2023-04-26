@@ -1,0 +1,11 @@
+# Screens
+set $main_screen DP-0
+set $aux_screen DP-4.8
+
+include config_shared
+
+# Sound volume keys change card settings
+bindsym XF86Tools exec --no-startup-id "~/system/git/scripts/change_used_sink.sh"
+bindsym XF86AudioRaiseVolume exec --no-startup-id "pactl set-sink-volume @DEFAULT_SINK@ +3%"
+bindsym XF86AudioLowerVolume exec --no-startup-id "pactl set-sink-volume @DEFAULT_SINK@ -3%"
+
