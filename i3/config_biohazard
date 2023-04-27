@@ -2,7 +2,7 @@ set $mod Mod4
 
 # Screens
 set $main_screen eDP-1
-set $aux_screen DP-2.3
+set $aux_screen DP-1 DP-2
 
 include config_shared
 
