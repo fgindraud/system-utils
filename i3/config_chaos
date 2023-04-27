@@ -1,3 +1,5 @@
+set $mod Mod4
+
 # Screens
 set $main_screen LVDS1
 set $aux_screen VGA1

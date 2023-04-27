@@ -3,7 +3,7 @@
 ################################ Setup ################################
 
 # Modificateurs
-set $mod Mod4
+# set $mod ?? (usually Mod4 == windows key)
 # move mod : Shift
 
 # Screens : set by includer config file

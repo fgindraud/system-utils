@@ -1,8 +1,8 @@
 set $mod Mod4
 
 # Screens
-set $main_screen DP-0
-set $aux_screen DP-4.8
+set $main_screen eDP-1
+set $aux_screen DP-2.3
 
 include config_shared
 
@@ -10,4 +10,8 @@ include config_shared
 bindsym XF86Tools exec --no-startup-id "~/system/git/scripts/change_used_sink.sh"
 bindsym XF86AudioRaiseVolume exec --no-startup-id "pactl set-sink-volume @DEFAULT_SINK@ +3%"
 bindsym XF86AudioLowerVolume exec --no-startup-id "pactl set-sink-volume @DEFAULT_SINK@ -3%"
+bindsym XF86AudioMute exec --no-startup-id "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+
+# Lxqt lockscreen
+bindsym $mod+l exec "lxqt-leave --lockscreen"
 
