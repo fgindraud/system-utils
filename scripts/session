@@ -2,7 +2,7 @@
 
 # Settings
 control_file="/tmp/current_session"
-log_file="/home/fgindraud/.session.log"
+log_file="~/.config/session.log"
 default_time_spec=25m
 
 # Time manipulation
