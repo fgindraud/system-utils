@@ -11,3 +11,5 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id "amixer set Master 3dB+"
 bindsym XF86AudioLowerVolume exec --no-startup-id "amixer set Master 3dB-"
 bindsym XF86AudioMute exec --no-startup-id "amixer set Master toggle"
 
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+x exit

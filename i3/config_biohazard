@@ -12,6 +12,9 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id "pactl set-sink-volume @DEFAUL
 bindsym XF86AudioLowerVolume exec --no-startup-id "pactl set-sink-volume @DEFAULT_SINK@ -3%"
 bindsym XF86AudioMute exec --no-startup-id "pactl set-sink-mute @DEFAULT_SINK@ toggle"
 
-# Lxqt lockscreen
-bindsym $mod+l exec "lxqt-leave --lockscreen"
-
+# Lxqt binding ; some extracted from Control Center -> Shortcuts
+bindsym XF86MonBrightnessDown exec --no-startup-id "lxqt-config-brightness -d"
+bindsym XF86MonBrightnessUp exec --no-startup-id "lxqt-config-brightness -i"
+bindsym $mod+l exec --no-startup-id "lxqt-leave --lockscreen"
+bindsym $mod+Shift+x exec --no-startup-id "lxqt-leave --logout"
+# ^ Do not kill i3 like other configs as lxqt will not close the session
