@@ -1,0 +1,24 @@
+[colors.normal]
+black = "#232627"
+blue = "#1d99f3"
+cyan = "#1abc9c"
+green = "#11d116"
+magenta = "#9b59b6"
+red = "#ed1515"
+white = "#fcfcfc"
+yellow = "#f6b450"
+
+[colors.primary]
+background = "#151515"
+foreground = "#fcfcfc"
+
+[font]
+size = 10.0
+
+[[keyboard.bindings]]
+action = "SpawnNewInstance"
+key = "N"
+mods = "Control|Shift"
+
+[shell]
+program = "/bin/zsh"
