@@ -12,6 +12,6 @@ LXQT has a daemon that handles monitor config.
 Did not use my own.
 
 LXQT pulls xscreensaver which is annoying.
-Replaced by manual binding to i3lock using ~/.config/lxqt/lxqt.conf
+Replaced by xautolock : disable autostart of Xscreensaver component, and add xautolock one using i3lock
 See https://github.com/lxqt/lxqt/wiki/ConfigScreensavers
 
