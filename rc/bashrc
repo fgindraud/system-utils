@@ -75,6 +75,7 @@ alias rm='rm -i'
 export EDITOR=vim
 export VISUAL=vim
 export SUDO_EDITOR=rvim
+export DIFFPROG=meld
 
 # Tabstop to 3 in terminal
 tabs -3 >/dev/null
