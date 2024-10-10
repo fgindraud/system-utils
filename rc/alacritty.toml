@@ -20,5 +20,5 @@ action = "SpawnNewInstance"
 key = "N"
 mods = "Control|Shift"
 
-[shell]
+[terminal.shell]
 program = "/bin/zsh"
