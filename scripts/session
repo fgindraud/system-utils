@@ -3,7 +3,7 @@
 # Settings
 control_file="/tmp/current_session"
 log_file="${XDG_DATA_HOME:-$HOME}/session.log"
-default_time_spec=25m
+default_time_spec=1h
 
 # Time manipulation
 function current_timestamp () {
