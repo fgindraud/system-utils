@@ -1,8 +1,8 @@
 set $mod Mod4
 
 # Screens
-set $main_screen DP-0
-set $aux_screen DP-4.8
+set $main_screen HDMI-A-0
+set $aux_screen DisplayPort-4
 
 include config_shared
 
