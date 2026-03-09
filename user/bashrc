@@ -1,8 +1,0 @@
-#
-# ~/.bashrc
-#
-
-# Startx on autologin
-[[ -z "$DISPLAY" && "$XDG_VTNR" -eq 1 ]] && exec startx 
-
-source ~/system/git/rc/bashrc

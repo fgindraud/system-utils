@@ -13,6 +13,14 @@ fi
 
 ####### Basic ########
 
+# Monitors.
+# HDMI limits to 144Hz. DP1 is valve index. DP5 is MST clone.
+sleep 2s
+xrandr \
+	--output DisplayPort-0 --primary --mode 2560x1440 --rate 165 --pos 1440x560 \
+	--output HDMI-A-0 --mode 2560x1440 --rotate left --pos 0x0 \
+	--output DisplayPort-1 --off
+
 # Disable bell
 xset -b
 
@@ -23,18 +31,8 @@ xset -b
 
 export QT_QPA_PLATFORMTHEME="qt6ct"
 
-# xdg autostart
-dex -a -s ~/.config/autostart/
+# Launch autostart stuff
+#dex -a
 
-~/.config/slam/slam &
-
-(
-	# Wait for slam to finish. Not pretty...
-	sleep 3s;
-	# Set a random cat picture as background
-	# Will one day be replaced by slam (if I improve it...)
-	feh --no-fehbg --image-bg black --bg-max --randomize $HOME/user/cats/
-) &
-
-# i3 Window Manager
-exec i3 &> /tmp/i3_log_fgindraud
+# i3 Window Manager. Push logs to systemd journal
+exec systemd-cat --identifier=i3 i3
